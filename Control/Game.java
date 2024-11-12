@@ -1,5 +1,6 @@
 package Control;
 
+import ChessPiece.King;
 import ChessPieceManager.Board;
 import Major.Piece;
 import java.util.Scanner;
@@ -13,28 +14,43 @@ public class Game {
     public Game() {
         board = new Board();
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Current player (White/Black): ");
+        System.out.print("Current player (White/Yellow): ");
         currentPlayer = scanner.nextLine();
     }
 
     private void switchPlayer() {
-        // Nếu current player là white thì chuyển lượt sang black, và ngược lại
-        currentPlayer = currentPlayer.equals("White") ? "Black" : "White";
+        currentPlayer = currentPlayer.equals("White") ? "Yellow" : "White";
     }
 
     public static void clearScreen() {
         System.out.print("\033[H\033[2J");  // Clear screen in terminals that support it (UNIX based)
         System.out.flush();
     }
-
     public void start() {
         Scanner scanner = new Scanner(System.in);
         int turnNumber = 0;
-        while (turnNumber < 8) {
+        while (turnNumber < 1000) {
             clearScreen();
             System.out.println(String.format("Luot choi thu %d", ++turnNumber));
             System.out.println("Luot cua " + currentPlayer);
             board.printBoard(); // In ra bàn cờ
+    
+            // Kiểm tra tình trạng chiếu khi bắt đầu lượt chơi của người chơi hiện tại
+            King king = (King) board.getKing(currentPlayer);
+            if (king != null) {
+                if (king.isInCheck(board)) {
+                    System.out.println("\u001B[31mDang bi chieu tuong !\u001B[0m");
+
+                    
+                    // Kiểm tra chiếu bí (checkmate)
+                    if (king.isCheckmate(board)) {
+                        System.out.println("Chieu bi! Nguoi choi " + currentPlayer + " thua.");
+                        return;  // Kết thúc trò chơi nếu bị chiếu bí
+                    }
+                }
+                else System.out.println("\u001B[31mHien khong co chieu tuong.\u001B[0m");
+            }
+           
     
             int startX, startY, endX, endY;
             boolean validMove = false;
@@ -71,8 +87,10 @@ public class Game {
                     validMove = true;
                     // In ra bước di chuyển sau khi hoàn thành
                     System.out.println("Quan co " + selectedPiece.getSymbol() + " da di chuyen tu (" + (startX + 1) + ", " + (startY + 1) + ") toi (" + (endX + 1) + ", " + (endY + 1) + ").");
-                    switchPlayer(); // Chuyển lượt chỉ khi nước đi hợp lệ
                     turnCount++;
+    
+                    // Chuyển lượt sau khi kiểm tra chiếu
+                    switchPlayer();
                 } else {
                     System.out.println("Nuoc di khong hop le. Vui long thu lai.");
                 }
@@ -85,4 +103,4 @@ public class Game {
         System.out.println("Tro choi ket thuc.");
         scanner.close();
     }
-}
+}  

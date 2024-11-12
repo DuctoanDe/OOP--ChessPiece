@@ -18,47 +18,59 @@ public class Board {
         // Các quân cờ được gán từ hàng đầu tiên đến hàng cuối cùng
     
         // Thêm các quân Tướng
-        board[0][4] = new General(0, 4, "White");
-        board[9][4] = new General(9, 4, "Black");
+        board[0][4] = new King(0, 4, "White");
+        board[9][4] = new King(9, 4, "Yellow");
     
         // Thêm các quân Sĩ
         board[0][3] = new Advisor(0, 3, "White");
         board[0][5] = new Advisor(0, 5, "White");
-        board[9][3] = new Advisor(9, 3, "Black");
-        board[9][5] = new Advisor(9, 5, "Black");
+        board[9][3] = new Advisor(9, 3, "Yellow");
+        board[9][5] = new Advisor(9, 5, "Yellow");
     
         // Thêm các quân Tượng
         board[0][2] = new Elephant(0, 2, "White", this);
         board[0][6] = new Elephant(0, 6, "White", this);
-        board[9][2] = new Elephant(9, 2, "Black", this);
-        board[9][6] = new Elephant(9, 6, "Black", this);
+        board[9][2] = new Elephant(9, 2, "Yellow", this);
+        board[9][6] = new Elephant(9, 6, "Yellow", this);
     
         // Thêm các quân Mã
         board[0][1] = new Horse(0, 1, "White", this);
         board[0][7] = new Horse(0, 7, "White", this);
-        board[9][1] = new Horse(9, 1, "Black", this);
-        board[9][7] = new Horse(9, 7, "Black", this);
+        board[9][1] = new Horse(9, 1, "Yellow", this);
+        board[9][7] = new Horse(9, 7, "Yellow", this);
     
         // Thêm các quân Xe
         board[0][0] = new Chariot(0, 0, "White", this);
         board[0][8] = new Chariot(0, 8, "White", this);
-        board[9][0] = new Chariot(9, 0, "Black", this);
-        board[9][8] = new Chariot(9, 8, "Black", this);
+        board[9][0] = new Chariot(9, 0, "Yellow", this);
+        board[9][8] = new Chariot(9, 8, "Yellow", this);
     
         // Thêm các quân Pháo
         board[2][1] = new Cannon(2, 1, "White", this);
         board[2][7] = new Cannon(2, 7, "White", this);
-        board[7][1] = new Cannon(7, 1, "Black", this);
-        board[7][7] = new Cannon(7, 7, "Black", this);
+        board[7][1] = new Cannon(7, 1, "Yellow", this);
+        board[7][7] = new Cannon(7, 7, "Yellow", this);
     
         // Thêm các quân Tốt
         for (int j = 0; j < 9; j += 2) {
             board[3][j] = new Soldier(3, j, "White");
-            board[6][j] = new Soldier(6, j, "Black");
+            board[6][j] = new Soldier(6, j, "Yellow");
         }
     }
     
-
+     // Phương thức trả về quân Tướng dựa trên màu
+     public King getKing(String color) {
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 9; j++) {
+                Piece piece = board[i][j];
+                // Kiểm tra nếu quân cờ là Tướng và có màu đúng
+                if (piece instanceof King && piece.getColor().equals(color)) {
+                    return (King) piece;
+                }
+            }
+        }
+        return null; // Nếu không tìm thấy quân Tướng cho màu đó
+    }
     public boolean isValidMove(int startX, int startY, int endX, int endY) {
         Piece piece = board[startX][startY];
         return piece != null && piece.isValidMove(endX, endY);
@@ -79,18 +91,9 @@ public class Board {
                               ++turnCount,
                               board[endX][endY].getSymbol(), 
                               startX + 1, startY + 1, endX + 1, endY + 1));
-
-        // // Kiểm tra chiếu bí sau mỗi nước đi
-
-        // if (isCheckmate("White")) {
-        //     gameOver = true;
-        //     System.out.println("Chieu bi! Den thang!");
-        // } else if (isCheckmate("Black")) {
-        //     gameOver = true;
-        //     System.out.println("Chieu bi! Trang thang");
-        // }
         return true;
     }
+    
     
     
     public void printBoard() {

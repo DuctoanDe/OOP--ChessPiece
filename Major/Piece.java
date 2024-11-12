@@ -34,9 +34,12 @@ public abstract class Piece {
     
         // Sử dụng mã màu dựa trên màu quân cờ
         if (color.equals("White")) {
-            coloredSymbol = "\u001B[34m" + symbol + "\u001B[0m"; // Màu đen cho quân trắng
+            coloredSymbol = "\u001B[37m" + symbol + "\u001B[0m"; // Màu trắng cho quân trắng
+
         } else {
-            coloredSymbol = "\u001B[31m" + symbol + "\u001B[0m"; // Màu trắng cho quân đen
+            coloredSymbol = "\u001B[33m" + symbol + "\u001B[0m"; // Màu trắng cho quân đen
+
+
         }
     
         return coloredSymbol; 
