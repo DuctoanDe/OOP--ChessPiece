@@ -1,0 +1,23 @@
+{
+    "java.project.sourcePaths": [
+        "."
+    ],
+    "java.project.referencedLibraries": [],
+    "json.format.keepLines": true,
+    "json.schemas": [
+
+    ],
+    "workbench.settings.useSplitJSON": true,
+    "json.validate.enable": true,
+    "redhat.telemetry.enabled": true,
+    "java.import.exclusions": [
+
+        "**/node_modules/**",
+        "**/.metadata/**",
+        "**/archetype-resources/**",
+        "**/META-INF/maven/**"
+        
+    ],
+    "jdk.advanced.disable.nbjavac": false
+   
+}
